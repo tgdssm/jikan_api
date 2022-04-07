@@ -8,11 +8,11 @@ class AnimeModel {
   late String duration;
   late String source;
   late String synopsis;
-  late int episodes;
   late double score;
   late Images images;
-  late String trailer;
   late List<Genre> genres;
+  int? episodes;
+  String? trailer;
 
   AnimeModel({
     required this.malId,
@@ -24,11 +24,11 @@ class AnimeModel {
     required this.duration,
     required this.source,
     required this.synopsis,
-    required this.episodes,
     required this.score,
     required this.images,
-    required this.trailer,
     required this.genres,
+    this.episodes,
+    this.trailer,
   });
 
   factory AnimeModel.fromJson(Map<String, dynamic> json){
@@ -45,8 +45,8 @@ class AnimeModel {
        episodes: json['episodes'],
        score: json['score'],
        images: Images.fromJson(json['images']['jpg']),
-       trailer: json['embed_url'],
-       genres: Genre.fromList(json['genres']),
+       trailer: json['trailer']['embed_url'],
+       genres: Genre.fromJsonToList(json['genres']),
     );
   }
 }
@@ -71,9 +71,9 @@ class Genre {
   late String name;
 
   Genre({required this.malId, required this.type, required this.name});
-  factory Genre.fromJson(Map<String, dynamic> genres) =>
-      Genre(malId: genres['mal_id'], type: genres['type'], name: genres['name']);
+  factory Genre.fromJson(Map<String, dynamic> genre) =>
+      Genre(malId: genre['mal_id'], type: genre['type'], name: genre['name']);
 
-  static List<Genre> fromList(List<Map<String, dynamic>> genres) =>
-      genres.map<Genre>((e) => Genre.fromJson(e)).toList();
+  static List<Genre> fromJsonToList(List<dynamic> genres) =>
+      genres.map<Genre>((genre) => Genre.fromJson(genre)).toList();
 }

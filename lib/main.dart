@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jikan_api/app/ui/home/home.dart';
-
+import 'package:jikan_api/app/routes/app_routes.dart';
 import 'app/routes/app_pages.dart';
 
 void main() {
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: (settings) => AppPages.generatePage(settings),
-      home: const Home(),
+      initialRoute: AppRoutes.HOME,
     );
   }
 }

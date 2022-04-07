@@ -1,15 +1,31 @@
-import 'package:jikan_api/app/data/providers/my_http_client.dart';
+import 'package:jikan_api/app/data/clients/my_http_service.dart';
+import 'package:jikan_api/app/data/models/anime_model.dart';
+import 'dart:developer' as dev;
 
-const baseUrl = 'https://api.jikan.moe/v4/anime';
+const baseUrl = 'https://api.jikan.moe/v4/anime/';
 
-class RequestAPI implements MyHttpClient{
-  late MyHttpClient myHttpClient;
-  RequestAPI({required this.myHttpClient});
+class RequestAPI {
+  late MyHttpService myHttpService;
+  RequestAPI({required this.myHttpService});
 
-  @override
-  Future get(String url) async{
-    myHttpClient.get(baseUrl);
-    throw UnimplementedError();
+  Future<List<AnimeModel>> fetchAnimes() async{
+    List<AnimeModel> animes = <AnimeModel>[];
+    final response = await myHttpService.get(baseUrl);
+    if(response != null) {
+      response['data'].forEach((element){
+        animes.add(AnimeModel.fromJson(element as Map<String, dynamic>));
+      });
+    }
+    return animes;
+  }
+
+  Future<AnimeModel> fetchAnimeById(int id) async {
+    late AnimeModel anime;
+    final response = await myHttpService.get(baseUrl + id.toString());
+    if(response != null) {
+      anime = AnimeModel.fromJson(response['data'] as Map<String, dynamic>);
+    }
+    return anime;
   }
 
 }
